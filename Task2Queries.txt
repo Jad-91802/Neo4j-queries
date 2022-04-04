@@ -1,0 +1,35 @@
+1.
+a.)
+MATCH (p:Person)-[*1..2]->(t:Tweet)
+WHERE p.name = "@Neo"
+RETURN t.hashtag;
+
+b.)
+MATCH p=(a)-->()-->()-->(b)
+WHERE a.name="@Melanie" AND b.name="@Neo"
+RETURN nodes(p);
+
+c.)
+MATCH (p:Person)-[:TWEETED]->(t)
+RETURN p.name, t.message, EXISTS(()-[:RETWEETED]->(t)) AS retweeted;
+
+d.)
+MATCH p = shortestPath((a:Person{name:"@Melanie"})-[:FOLLOWS]-(b:Person{ name:"@Neo"}))
+RETURN p
+
+2.
+a.)
+MATCH () RETURN COUNT(*) AS TotalNodes;
+
+b.)
+MATCH (a:Person)-[:FOLLOWS]->(b:Person)
+RETURN a.name, COUNT(b);
+
+c.)
+MATCH (a:Person)-[:FOLLOWS{since:2014}]->(b:Person) 
+RETURN b.name, COUNT(a);
+
+d.)
+MATCH (a:Person)-[:FOLLOWS]->(b:Person)
+RETURN b.name, COUNT(a) AS Followers
+ORDER BY Followers DESC LIMIT 1;

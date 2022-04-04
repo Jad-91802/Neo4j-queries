@@ -1,0 +1,59 @@
+a.
+i.)
+CREATE
+( psT:Person{name: "@Thando", from: "Durban", age: "20"} ),
+( psJ:Person{name: "@Johan", from: "Pretoria", age: "19"} ),
+( psN:Person{name: "@Neo", from: "Tshwane", age: "22"} ),
+( psM:Person{name: "@Melanie", from: "Joburg", age: "21"} )
+
+CREATE 
+(psT)-[:FOLLOWS{since:2014}]->(psJ),
+(psT)-[:FOLLOWS{since:2011}]->(psN),
+(psJ)-[:FOLLOWS{since:2012}]->(psT),
+(psN)-[:FOLLOWS{since:2016}]->(psT),
+(psN)-[:FOLLOWS{since:2016}]->(psM),
+(psM)-[:FOLLOWS{since:2012}]->(psJ),
+(psM)-[:FOLLOWS{since:2012}]->(psT)
+
+ii.)
+MATCH p=()-[r:FOLLOWS]->() RETURN p 
+
+iii.)
+CREATE
+(t1:Tweet{hashtag:"#Trees", message:"provide oxygen"}),
+(t2:Tweet{hashtag:"#Rhinos", message:"are innocent"})
+WITH t1,t2
+MATCH 
+(psT:Person{name:"@Thando"}),
+(psJ:Person{name:"@Johan"}),
+(psN:Person{name:"@Neo"}),
+(psM:Person{name:"@Melanie"})
+CREATE
+(psT)-[:TWEETED{date:'20-08-2018'}]->(t1),
+(psJ)-[:RETWEETED{date:'20-08-2018'}]->(t1),
+(psN)-[:TWEETED{date:'05-09-2018'}]->(t2),
+(psM)-[:FAVORITED{date:'05-09-2018'}]->(t2)
+
+iv.)
+MATCH p=()-->() RETURN p
+b.
+i.)
+MATCH (l) RETURN DISTINCT labels(l)
+
+ii.)
+MATCH (p:Person) RETURN p.name ORDER BY p.name
+
+iii.)
+MATCH (t:Tweet) RETURN t.hashtag ORDER BY t.hashtag
+
+iv.)
+MATCH ()-[r]-() RETURN DISTINCT type(r);
+
+v.)
+MATCH (p:Person)-[:TWEETED]->(t) RETURN p.name, t.message
+
+vi.)
+MATCH ()-[:RETWEETED]->(t) RETURN t.hashtag, t.message
+
+vii.)
+MATCH ()-[:FAVORITED]->(t) RETURN t.hashtag, t.message

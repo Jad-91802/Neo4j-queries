@@ -1,0 +1,16 @@
+MATCH (n)
+DETACH DELETE n;
+
+4.)
+LOAD CSV WITH HEADERS FROM "file:///persons.csv" AS row
+CREATE (p:Person{id:toInt(row.ID), name:row.name})
+
+5.)
+MATCH (n) RETURN n;
+
+6.)
+LOAD CSV WITH HEADERS FROM "file:///follows.csv" AS row
+CREATE (p:Person{name:row.person})-[:FOLLOWS]->(q:Person{name:row.follows});
+
+7.)
+MATCH p=()-[r:FOLLOWS]->() RETURN p LIMIT 25
